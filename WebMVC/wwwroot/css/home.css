@@ -1,0 +1,734 @@
+﻿@keyframes slide-bck-center {
+    0% {
+        transform: scale(0);
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.carousel-inner {
+    position: relative;
+    height: 100vh;
+}
+
+.banner .carousel-caption {
+    position: absolute;
+    top: 42%;
+    bottom: unset;
+    transform: translateY(-50%);
+}
+
+.banner .carousel-caption h1 {
+    font-family: "Forum", cursive;
+    font-size: 100px;
+    font-weight: 400;
+    margin-top: 25px;
+    animation: slide-top 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.banner .headline-1 h4 {
+    animation: slide-bck-center 0.8s cubic-bezier(0.47, 0, 0.745, 0.715);
+}
+
+.banner .headline-1 p {
+    filter: brightness(2);
+    animation: slide-right 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-top {
+    0% {
+        transform: translateY(120px);
+        opacity: 0.2;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-right {
+    0% {
+        transform: translateX(-150px);
+        opacity: 0.1;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.banner .carousel-item .image {
+    animation: scale 7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite alternate;
+}
+
+@keyframes scale {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.5);
+    }
+}
+
+.banner .carousel-indicators button {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.offer {
+    background-color: var(--bg);
+    padding: 100px 0;
+    position: relative;
+}
+
+.offer .slide-right {
+    position: absolute;
+    right: 0;
+    animation: moveTop 2s linear infinite alternate;
+}
+
+@keyframes moveTop {
+    0% {
+        top: 3%;
+    }
+    100% {
+        top: 7%;
+    }
+}
+
+.offer .slide-left {
+    position: absolute;
+    bottom: 0;
+    animation: moveBottom 2s linear infinite alternate;
+}
+
+@keyframes moveBottom {
+    0% {
+        bottom: 0%;
+    }
+    100% {
+        bottom: 3%;
+    }
+}
+
+.offer .content {
+    color: var(--white);
+    position: relative;
+    font-family: "Forum", cursive;
+    z-index: 1111111;
+}
+
+.offer .content h2 {
+    font-size: 50px;
+    margin-top: 40px;
+}
+
+.offer .item {
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.offer .text {
+    margin-bottom: 100px;
+}
+
+.offer .item .images {
+    z-index: 3;
+    position: relative;
+    cursor: pointer;
+    width: 90%;
+    height: 400px;
+    overflow: hidden;
+    margin: 20px auto;
+    object-fit: cover;
+}
+
+.offer .item .images img {
+    transition: 0.5s;
+}
+
+.offer .item .images:hover img {
+    transform: scale(1.1);
+}
+
+.offer .item .after {
+    position: absolute;
+    width: 50%;
+    top: -7%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.offer .item:hover .after {
+    transform: translateX(-50%) rotateY(180deg);
+}
+
+.offer .item .images::after {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 100%);
+    content: "";
+    height: 800px;
+    left: -400px;
+    opacity: 1;
+    position: absolute;
+    top: -30%;
+    transform: rotate(35deg);
+    transition: all 0.8s;
+    width: 50%;
+    z-index: 66;
+}
+
+.offer .item:hover .images::after {
+    animation: movebg 1s;
+}
+
+@keyframes movebg {
+    0% {
+        left: -400px;
+    }
+    100% {
+        left: 120%;
+    }
+}
+
+.offer .view {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.offer .view h5 {
+    color: var(--white);
+    font-family: "Forum", cursive;
+    font-size: 35px;
+}
+
+.offer .view .after-1 a {
+    color: var(--mainColor);
+    display: inline-block;
+    /* border: 1px solid white; */
+}
+
+.offer .view .after-1 a::after {
+    content: "";
+    background-color: var(--mainColor);
+    width: 0;
+    height: 1px;
+    display: block;
+    margin-top: 8px;
+    transition: 0.5s;
+}
+
+.offer .view .after-1 a:hover::after {
+    width: 100%;
+}
+
+.group {
+    background-color: var(--bg2);
+}
+
+.group {
+    padding: 100px 20px;
+}
+
+.group .content {
+    color: var(--white);
+    font-family: "Forum", cursive;
+}
+
+.group .content h2 {
+    font-size: 50px;
+    margin-top: 20px;
+}
+
+.group .item .icon {
+    width: 35%;
+    margin: 0 auto;
+    filter: brightness(1.2);
+    transition: 0.5s;
+}
+
+.group .item {
+    background-color: var(--bg);
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+    cursor: pointer;
+    width: 90%;
+}
+
+.group .item .text {
+    margin-top: 30px;
+    color: var(--white);
+}
+
+.group .item .text p {
+    color: var(--gray);
+    margin-top: 20px;
+}
+
+.group .item:hover .icon {
+    transform: scale(-1) rotate(180deg);
+}
+
+.group .color {
+    background-color: #151616;
+}
+
+.list {
+    background-color: var(--bg);
+    text-align: center;
+    padding: 100px 0;
+    position: relative;
+}
+
+.list .headline-1 .content h2 {
+    color: var(--white);
+    font-size: 50px;
+    font-family: "Forum", cursive;
+    margin: 40px 0;
+}
+
+.list .nav {
+    border: 1px solid var(--mainColor);
+    border-left: none;
+    border-right: none;
+    padding: 20px;
+    width: 80%;
+}
+
+.list .box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 222;
+}
+
+.list .nav .nav-item .nav-link {
+    background-color: transparent;
+    border: none;
+    color: var(--white);
+    filter: brightness(1.2);
+    font-family: "Forum", cursive;
+    font-size: 12px;
+    padding: 5px !important;
+    display: block;
+}
+
+.list .nav .nav-item .nav-link.active {
+    color: var(--mainColor);
+}
+
+.list .nav .nav-item .nav-link.active::after {
+    content: "";
+    background-color: var(--mainColor);
+    height: 1px;
+    display: block;
+    margin: 0 auto;
+    animation: lineColor 0.3s linear;
+}
+
+@keyframes lineColor {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.list .nav {
+    gap: 30px;
+}
+
+.list .nav .square {
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--mainColor);
+    animation: square 5s linear infinite;
+    filter: brightness(1.2);
+}
+
+.tab-content {
+    width: 82%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 222;
+}
+
+.tab-content .food {
+    align-items: center;
+}
+
+.tab-content .content .images {
+    margin: 20px 10px;
+    overflow: hidden;
+    width: 20%;
+}
+
+.tab-content .content {
+    cursor: pointer;
+}
+
+.tab-content .content img {
+    transition: 0.5s;
+}
+
+.tab-content .content:hover img {
+    transform: scale(1.1);
+}
+
+.tab-content .content .des {
+    margin-top: 20px;
+    position: relative;
+}
+
+.tab-content .content .des h5 {
+    font-size: 21px;
+    color: var(--white);
+    font-family: "Forum", cursive;
+    background-color: var(--bg);
+    position: relative;
+    padding-right: 10px;
+}
+
+.tab-content .content .des h6 {
+    position: relative;
+    background-color: var(--bg);
+    color: var(--mainColor);
+    padding-left: 10px;
+}
+
+.tab-content .content .des .text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* gap: 10px; */
+}
+
+.tab-content .content .des .text::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: var(--mainColor);
+}
+
+.tab-content .before {
+    padding-right: 100px;
+    position: relative;
+}
+
+.tab-content .normal {
+    padding-left: 100px;
+    /* border-left: 2px solid var(--gray); */
+}
+
+.tab-content .before::before {
+    content: "";
+    background-color: var(--mainColor);
+    width: 1px;
+    height: 90%;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 5%;
+}
+
+.list .content .des {
+    text-align: start;
+    color: var(--gray);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.list .slide-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: moveTop 2s linear infinite alternate;
+    z-index: 1;
+}
+
+.list .slide-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    animation: moveBottom 2s linear infinite alternate;
+}
+
+.list .text-time {
+    color: var(--white);
+    font-weight: 600;
+    margin-top: 30px;
+    position: relative;
+    z-index: 232323;
+}
+
+.list .text-time span {
+    color: var(--mainColor);
+    text-align: center;
+}
+
+.team {
+    background-color: var(--bg2);
+    text-align: center;
+    padding: 100px 20px;
+    position: relative;
+    width: 100%;
+}
+
+.team .headline-1 h2 {
+    color: var(--white);
+    font-family: "Forum", cursive;
+    font-size: 50px;
+    margin: 40px 0;
+}
+
+.team .box .name {
+    text-align: left;
+    position: relative;
+    margin-top: 20px;
+    z-index: 1111;
+}
+
+.team .box .name h2 {
+    color: var(--white);
+    font-size: 30px;
+    font-family: "Forum", cursive;
+}
+
+.team .box .name h5 {
+    color: var(--mainColor);
+    font-size: 15px;
+    margin: 15px 0;
+}
+
+.team .box .name p {
+    color: var(--gray);
+}
+
+.team .image {
+    /* width: 100%; */
+    position: relative;
+    overflow: hidden;
+}
+
+.team .title {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #15161678;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+}
+
+.team .box:hover .title {
+    opacity: 1;
+    visibility: visible;
+    left: 0;
+}
+
+.team .box .image img {
+    transition: 0.5s;
+}
+
+.team .box:hover img {
+    transform: scale(1.1);
+}
+
+.team .title ul {
+    gap: 20px;
+}
+
+.team .title ul li a {
+    color: var(--white);
+    font-size: 20px;
+}
+
+.team .title ul li {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    background-color: black;
+    transition: 0.5s;
+}
+
+.team .title ul li:hover {
+    background-color: var(--mainColor);
+}
+
+.team .slide {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    animation: moveBottom 2s linear infinite alternate;
+}
+
+.team .food-slide {
+    position: absolute;
+    right: 0;
+    animation: moveTop 2s linear infinite alternate;
+}
+
+.video {
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+    background-image: linear-gradient(to bottom, #00000081, #00000081), url(../img/banner/background.jpg);
+    background-attachment: fixed;
+}
+
+.video .headline-1 h2 {
+    color: var(--white);
+    font-family: "Forum", cursive;
+    font-size: 50px;
+    margin: 40px 0;
+}
+
+.video .text h3 {
+    color: var(--white);
+    font-family: "Forum", cursive;
+    font-weight: 500;
+    font-size: 50px;
+    width: 85%;
+    margin: 30px auto;
+}
+
+.video .text p {
+    color: var(--mainColor);
+    font-weight: 600;
+    letter-spacing: 3px;
+    font-size: 12px;
+}
+
+/* .video .group-video {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+} */
+
+.video .image {
+    filter: brightness(0.5);
+}
+
+.video ul {
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.video ul li {
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--mainColor);
+    animation: square 5s linear infinite;
+    filter: brightness(1.2);
+}
+
+.modal.show .modal-dialog {
+    max-width: 700px;
+}
+
+.modal-content {
+    flex-direction: unset !important;
+    /* padding: 0 0 40px 0; */
+    display: block;
+}
+
+#videoModal {
+    display: none;
+    position: fixed;
+    z-index: 9999919;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    margin: auto;
+    width: 80%;
+    max-width: 700px;
+    position: relative;
+    top: 20%;
+}
+
+.close {
+    color: white;
+    position: absolute;
+    top: 12%;
+    right: 27%;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+iframe {
+    width: 100%;
+    height: 400px;
+    /* padding-bottom: 56.25%; */
+}
+
+@media (max-width: 600px) {
+    /* Make the modal content responsive */
+    .modal-content {
+        width: 90%;
+    }
+}
+
+.video-play button {
+    font-size: 30px;
+    color: var(--white);
+    border: 2px solid var(--white);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    background-color: transparent !important;
+    position: relative;
+}
+
+.video-play button::after {
+    content: "";
+    border: 2px solid rgb(255, 255, 255);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    opacity: 0;
+    top: -2%;
+    left: -2%;
+    animation: slowPlay 1.5s linear infinite;
+}
+
+@keyframes slowPlay {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0.01;
+    }
+}

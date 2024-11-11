@@ -1,0 +1,136 @@
+.menu-2 {
+    padding: 0;
+}
+
+.menu-3 {
+    padding: unset;
+    padding-top: 100px;
+}
+
+.menu-4 {
+    padding-top: 100px;
+}
+
+.menu .headline-1 h2 {
+    margin-top: 0px !important;
+    margin-bottom: 40px;
+}
+
+.food-style ul li {
+    text-align: start;
+    margin-top: 15px;
+    margin-bottom: 40px;
+}
+
+.food-style ul li .info-food {
+    display: flex;
+    align-items: center;
+    color: var(--white);
+    position: relative;
+}
+
+.food-style ul li .info-food .name-food {
+    margin-bottom: 0;
+    font-size: 18px;
+    font-family: "Forum", cursive;
+    background-color: var(--bg2);
+    position: relative;
+    padding-right: 15px;
+}
+
+.food-style ul li .info-food .price {
+    margin-left: 10px;
+    color: var(--mainColor);
+    font-family: "Forum", cursive;
+    font-size: 20px;
+    position: relative;
+    background-color: var(--bg2);
+    padding-left: 15px;
+}
+
+.food-style ul li .info-food::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: var(--mainColor);
+}
+
+.food-style ul li .des {
+    color: var(--gray) !important;
+    margin-top: 10px;
+}
+
+.list-menu .menu:nth-child(even) .row {
+    flex-direction: row-reverse;
+}
+
+.container .row .image-before {
+    position: relative;
+}
+
+.image-before .line-left {
+    border: 0;
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: -5%;
+    width: 2.5%;
+    height: 100%;
+    background-image: url(../img/slide/download.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+@media (max-width: 750px) {
+    .banner-menu .headline-1 h2 {
+        font-size: 25px;
+    }
+    .banner-menu .headline-1 h4 {
+        font-size: 10px !important;
+    }
+    .banner-menu .headline-1 {
+        top: 5%;
+    }
+    .menu-3 {
+        padding-top: 20px !important;
+    }
+    .menu-4 {
+        padding-top: 20px !important;
+    }
+    .menu-1 {
+        padding: unset;
+        padding: 50px 0 20px 0;
+    }
+}
+
+@media (max-width: 650px) {
+    .banner-menu {
+        margin-top: 30px;
+    }
+    .banner-menu .headline-1 h2 {
+        font-size: 20px;
+    }
+    .banner-menu .headline-1 h4 {
+        font-size: 8px !important;
+        letter-spacing: 5px;
+    }
+    .banner-menu .headline-1 {
+        top: 0%;
+    }
+}
+
+@media (max-width: 380px) {
+    .banner-menu .headline-1 h2 {
+        font-size: 15px;
+        margin-top: -10px !important;
+    }
+    .banner-menu .headline-1 h4 {
+        font-size: 8px !important;
+        letter-spacing: 3px;
+    }
+    .banner-menu .headline-1 {
+        top: 0%;
+    }
+}

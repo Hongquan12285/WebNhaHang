@@ -1,0 +1,591 @@
+.about-content {
+    background-color: var(--bg);
+    padding: 100px 0;
+    position: relative;
+}
+
+.about-content .headline-1 {
+    text-align: center;
+}
+
+.about-content .headline-1 h5 {
+    font-size: 30px;
+    color: var(--white);
+    font-weight: 400;
+    font-family: "Forum", cursive;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.about-content .headline-1 h5 span {
+    color: var(--mainColor);
+}
+
+.about-certi .text-about .image-singnature {
+    width: 30%;
+    margin: 30px 0;
+}
+
+.about-certi {
+    position: relative;
+    z-index: 222;
+}
+
+.about-certi .text-about .name {
+    color: var(--mainColor);
+    font-weight: 400;
+}
+
+.about-certi .text-about .content {
+    color: var(--white);
+}
+
+.about-certi .video-about .video-play {
+    position: relative;
+    margin-top: 70px;
+}
+
+.about-certi .video-about .video-play .pause {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.about-certi .video-about .video-play .pause .btn {
+    display: block;
+    font-size: 30px;
+    color: var(--white);
+    border: 2px solid var(--white);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    background-color: transparent !important;
+}
+
+.about-certi .video-about .video-play .pause .btn::after {
+    content: "";
+    border: 2px solid rgb(255, 255, 255);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    opacity: 0;
+    top: -2%;
+    left: -2%;
+    animation: slowPlay 1.5s linear infinite;
+}
+
+@keyframes slowPlay {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0.01;
+    }
+}
+
+.image-restaurant img {
+    height: 537px;
+    object-fit: cover;
+}
+
+.time {
+    text-align: center;
+    border: 1px solid var(--mainColor);
+    width: 85%;
+    height: 537px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.time::after {
+    content: "";
+    position: absolute;
+    width: 90%;
+    height: 500px;
+    border: 1px solid var(--mainColor);
+    left: 5%;
+    top: 3%;
+}
+
+.time .info-time .lunch {
+    margin-bottom: 25px;
+}
+
+.time .info-time h6 {
+    color: var(--white);
+    font-weight: 700;
+}
+
+.time .info-time p {
+    color: var(--gray);
+    font-weight: 400;
+    font-family: "DM Sans", sans-serif;
+}
+
+.time .info-time .square {
+    border: 1px solid var(--mainColor);
+    width: 10px;
+    height: 10px;
+    margin: auto;
+    margin-bottom: 20px;
+    transform: rotate(45deg);
+}
+
+.box-about {
+    margin-top: 70px;
+}
+
+.slide-about {
+    position: absolute;
+    right: 0;
+    top: 10%;
+}
+
+.slide-about-2 {
+    position: absolute;
+    top: 30%;
+    z-index: 111;
+}
+
+.color {
+    margin-top: 70px;
+}
+
+.container-fluid {
+    background-color: var(--bg2);
+    text-align: center;
+}
+
+.content .headline-1 h2 {
+    color: var(--white);
+    font-family: "Forum", cursive;
+    font-size: 50px;
+    position: relative;
+}
+
+.content .group-about .text-content {
+    color: var(--white);
+    font-family: "DM Sans", sans-serif;
+    width: 80%;
+    margin: 20px auto;
+}
+
+.group-about .signature-2 {
+    width: 20%;
+    margin: 30px auto;
+}
+
+.group-about {
+    position: relative;
+}
+
+.group-about h5 {
+    font-size: 13px;
+    margin-top: 20px;
+    color: var(--mainColor);
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 2222;
+}
+
+.group-about .btn2 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    z-index: 2222;
+}
+
+.content-info {
+    position: relative;
+}
+
+.slide-about-content {
+    position: absolute;
+    right: 0%;
+    top: -30%;
+    /* width: 20%; */
+}
+
+.slide-about-content-1 {
+    position: absolute;
+    left: 0;
+}
+
+.modal.show .modal-dialog {
+    max-width: 700px;
+}
+
+.modal-content {
+    flex-direction: unset !important;
+    /* padding: 0 0 40px 0; */
+    display: block;
+}
+
+/* The modal (background) */
+
+#videoModal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Modal Content */
+
+.modal-content {
+    margin: auto;
+    width: 80%;
+    max-width: 700px;
+    position: relative;
+    top: 20%;
+}
+
+/* Close Button */
+
+.close {
+    color: white;
+    position: absolute;
+    top: 10%;
+    right: 27%;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Responsive Iframe */
+
+iframe {
+    width: 100%;
+    height: 400px;
+    /* padding-bottom: 56.25%; */
+}
+
+@media (max-width: 600px) {
+    /* Make the modal content responsive */
+    .modal-content {
+        width: 90%;
+    }
+}
+
+.video-play {
+    position: relative;
+}
+
+.video-play button {
+    font-size: 30px;
+    color: var(--white);
+    border: 2px solid var(--white);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto;
+    position: absolute;
+    background-color: transparent !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.video-play button:hover {
+    border: 2px solid var(--white);
+    color: var(--white);
+}
+
+.video-play button::after {
+    content: "";
+    border: 2px solid rgb(255, 255, 255);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    opacity: 0;
+    top: -2%;
+    left: -2%;
+    animation: slowPlay 1.5s linear infinite;
+}
+
+@keyframes slowPlay {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0.01;
+    }
+}
+
+.intro {
+    background-color: var(--bg);
+    position: relative;
+}
+
+.intro .slide-food {
+    position: absolute;
+    top: -15%;
+}
+
+.intro .slide-food-1 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.intro .box-card {
+    gap: 30px;
+    margin-bottom: 80px;
+}
+
+.intro .box-card .card-item {
+    width: 25%;
+    text-align: center;
+    background: var(--color-five);
+    border-radius: 50%;
+    background-color: var(--bg2);
+}
+
+.intro .box-card .card-item:hover {
+    transform: rotateY(180deg);
+}
+
+.intro .box-card .card-item:not:hover {
+    transform: rotateY(90deg);
+}
+
+.intro .box-card .card-text {
+    width: 75%;
+    color: var(--white);
+    font-family: "Forum", cursive;
+}
+
+.intro .box-card .card-text p {
+    color: var(--gray);
+    font-size: 14px;
+    font-weight: 400;
+    font-family: "DM Sans", sans-serif;
+}
+
+.intro .about-slide {
+    /* width: 35%; */
+    background-image: url(../img/slide/banner.svg);
+    background-repeat: no-repeat;
+    background-size: inherit;
+    background-attachment: scroll;
+    background-position: 50% 0;
+    box-shadow: 0 0 0 0 #ffffff;
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.intro .about-image {
+    width: 80%;
+    overflow: hidden;
+}
+
+.intro .headline-1 {
+    text-align: center;
+}
+
+.intro .headline-1 h3 {
+    color: var(--white);
+    font-family: "Forum", cursive;
+    font-size: 50px;
+    margin-bottom: 80px;
+}
+
+.intro {
+    padding: 100px 0;
+}
+
+@media (max-width: 1200px) {
+    .time .info-time .lunch p {
+        font-size: 14px !important;
+    }
+    .time .info-time .contract p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 991px) {
+    .banner-menu .headline-1 h4 {
+        font-size: 13px !important;
+    }
+    .banner-menu .headline-1 h2 {
+        font-size: 50px;
+    }
+    .image-restaurant {
+        margin: 20px 0;
+    }
+    .time {
+        width: 100%;
+    }
+    .time::after {
+        width: 90%;
+        height: 470px;
+        left: 5%;
+        top: 6%;
+    }
+    .slide-about-content {
+        display: none;
+    }
+    .slide-about-content-1 {
+        display: none;
+    }
+    .content-info {
+        padding: 50px;
+        border: 1px solid var(--mainColor);
+    }
+    .about-certi .text-about .image-singnature {
+        width: 20%;
+        margin: 30px 0px;
+        margin: 0 auto;
+    }
+    .text-about {
+        text-align: center;
+    }
+    .text-about .name {
+        margin-top: 20px;
+        font-size: 15px;
+    }
+    .intro .slide-food {
+        top: -7%;
+    }
+    .slide-about {
+        width: 20%;
+    }
+    .about-content .headline-1 h5 {
+        position: relative;
+        z-index: 2222 !important;
+    }
+    .image-restaurant {
+        position: relative;
+        z-index: 2222 !important;
+    }
+    .intro .box-card .card-item {
+        width: 15%;
+    }
+    .intro .box-card .card-text {
+        width: 85%;
+    }
+    .intro .about-image {
+        width: 50% !important;
+    }
+    .card-top {
+        margin-top: 80px;
+    }
+}
+
+@media (max-width: 740px) {
+    .banner-menu .headline-1 h4 {
+        font-size: 11px !important;
+        margin-top: -10px !important;
+    }
+    .banner-menu .headline-1 h2 {
+        font-size: 40px;
+    }
+    .banner-menu .headline-1 p {
+        width: 100px;
+    }
+}
+
+@media (max-width: 575px) {
+    .banner-menu {
+        margin-top: 50px;
+    }
+    .banner-menu .headline-1 h4 {
+        font-size: 8px !important;
+        letter-spacing: 3px;
+        margin-top: -30px !important;
+    }
+    .headline-1 h4 {
+        font-size: 10px !important;
+        /* letter-spacing: 5px; */
+        margin-bottom: unset !important;
+    }
+    .headline-1 p {
+        display: block !important;
+    }
+    .banner-menu .headline-1 h2 {
+        font-size: 20px;
+    }
+    .banner-menu .headline-1 p {
+        width: 80px;
+    }
+    .about-content .headline-1 h5 {
+        font-size: 20px;
+    }
+    .group-about .btn2 {
+        width: 60%;
+    }
+    .intro .slide-food {
+        width: 40%;
+        left: 30%;
+        top: -7%;
+    }
+}
+
+@media (max-width: 370px) {
+    .about-content .headline-1 h5 {
+        font-size: 15px !important;
+        line-height: 25px;
+    }
+    .about-certi .text-about .content {
+        font-size: 12px !important;
+        line-height: 25px;
+    }
+    .box-number {
+        gap: 5px;
+    }
+    .box-number .numscroller {
+        font-size: 30px !important;
+    }
+    .box-number .plus {
+        font-size: 20px;
+    }
+    .box-number .describe {
+        font-size: 10px;
+    }
+    .content .headline-1 h2 {
+        font-size: 30px;
+    }
+    .content .group-about .text-content {
+        font-size: 12px !important;
+        line-height: 25px;
+        width: 95%;
+    }
+    .group-about .signature-2 {
+        width: 40%;
+    }
+    .group-about .btn2 {
+        width: 70%;
+        font-size: 10px;
+    }
+    .intro .slide-food {
+        width: 50%;
+        left: 25%;
+        top: -4%;
+    }
+    .intro .headline-1 h3 {
+        font-size: 30px;
+    }
+}

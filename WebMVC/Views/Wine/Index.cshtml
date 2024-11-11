@@ -1,0 +1,295 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:description" content="Welcome to DELICI" />
+    <title>DELICI</title>
+
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Css bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Global css -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- local css -->
+    <link rel="stylesheet" href="css/menu.css" />
+</head>
+<div class="scroll">
+    <i class="fa-solid fa-angle-up"></i>
+</div>
+<nav class="navbar navbar-expand-lg fixed-top" id="1">
+    <div class="container-fluid d-flex">
+        <a class="navbar-brand" href="#"><img src="img/logo/logo.png" alt="" /></a>
+        <div class="collapse navbar-collapse d-flex justify-content-between align-items-center">
+            <ul class="navbar-nav d-flex gap-3">
+                <li class="nav-item">
+                    <a class="nav-link after" asp-controller="Home" asp-action="Index">TRANG CHỦ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="GioiThieu" asp-action="Index">GIỚI THIỆU</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="OrderFood">THỰC ĐƠN</a>
+                    <div class="list-food">
+                        <a class="menu-food" asp-action="Index" asp-controller="OrderFood">
+                            <img src="img/menu/menu-food-1.jpg" alt="" />
+                            <h3>Đặt món ăn</h3>
+                        </a>
+                        <a class="menu-food" asp-action="Index" asp-controller="PartyMenu">
+                            <img src="img/menu/menu-food-2.jpg" alt="" />
+                            <h3>Thực đơn tiệc</h3>
+                        </a>
+                        <a class="menu-food" asp-action="Index" asp-controller="Wine">
+                            <img src="img/menu-wine/wine-banner.jpg" alt="" />
+                            <h3>Rượu</h3>
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Reservation" asp-action="Index">ĐẶT CHỖ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="LienHe" asp-action="Index">LIÊN HỆ</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right d-flex gap-4 align-items-center">
+            <div class="phone">
+                <span><i class="fa-solid fa-phone"></i></span>+84 779238876
+            </div>
+            <a href="cart.html" class="cart"><i class="fa-solid fa-cart-shopping"></i> <span>0</span></a>
+            <div class="user">
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <!-- Hiển thị tên người dùng khi đã đăng nhập -->
+                    <div class="dropdown">
+                        <span class="text-login dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Xin chào, @User.Identity.Name
+                        </span>
+                        <ul class="dropdown-menu bg-black" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item bg-black text-bold" asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <!-- Hiển thị "Đăng nhập" khi chưa đăng nhập -->
+                    <span class="icon-login">
+                        <i class="fa-solid fa-circle-user"></i>
+                        <a asp-controller="Account" asp-action="Login">ĐĂNG NHẬP</a>
+                    </span>
+                }
+            </div>
+
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu-mobile">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+<div class="offcanvas offcanvas-end" id="menu-mobile">
+    <div class="offcanvas-header">
+        <h1 class="offcanvas-title"><img src="img/logo/logo.png" alt="" /></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="user d-flex justify-content-center">
+        <span>
+            <a href="login-signup.html"><i class="fa-solid fa-user"></i></a>
+        </span>
+    </div>
+    <p class="customer d-flex justify-content-center">Xin chào, @User.Identity.Name</p>
+    <div class="offcanvas-body">
+        <ul class="offcanvas-nav">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">TRANG CHỦ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="GioiThieu" asp-action="Index">GIỚI THIỆU</a>
+            </li>
+            <li class="nav-item nav-toggle">
+                <a class="nav-link nav-dow d-flex justify-content-between" href="#"><span class="name">MENU</span><span class="icon-dow"><i class="fa-solid fa-chevron-down"></i></span></a>
+                <div class="toggle-menu">
+                    <ul>
+                        <li class="nav-item"><a asp-action="Index" asp-controller="PartyMenu">Party Menu</a></li>
+                        <li class="nav-item"><a asp-action="Index" asp-controller="OrderFood">Order Food</a></li>
+                        <li class="nav-item pb-0"><a asp-action="Index" asp-controller="Wine">Wine</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item bottom">
+                <a class="nav-link" asp-controller="Reservation" asp-action="Index">ĐẶT CHỖ</a>
+            </li>
+            <li class="nav-item bottom">
+                <a class="nav-link" asp-controller="LienHe" asp-action="Index">LIÊN HỆ</a>
+            </li>
+        </ul>
+        <div class="text-canvas text-center">
+            <h3>Visit Us</h3>
+            <p>
+                20 MỸ ĐÌNH, NAM TỪ LIÊM, HÀ NỘI <br /> Giờ mở cửa: 09:00 am - 01:00 pm <br /> booking@domainame.com
+            </p>
+            <p class="none"></p>
+            <p class="bold">Booking request :</p>
+            <h4>+84 779238876</h4>
+        </div>
+    </div>
+</div>
+<div class="banner-menu">
+    <div class="image"><img src="img/banner/banner-about.jpg " alt="" /></div>
+    <div class="headline-1">
+        <h4>NGON & TUYỆT VỜI</h4>
+        <p><img src="img/product/separator.png" alt="" /></p>
+        <h2>WINE</h2>
+    </div>
+</div>
+<div class="menu">
+    <div class="slide"><img src="img/icon/tomato.png" alt="" /></div>
+    <div class="slide-cake"><img src="img/icon/cake.png" alt="" /></div>
+    <div class="content-menu text-center">
+        <div class="headline-1">
+            <h4>NGON TUYỆT VỜI</h4>
+            <p><img src="img/product/separator.png" alt="" /></p>
+            <h2> MENU</h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row food-menu list-food d-flex justify-content-center" id="food-menu"></div>
+    </div>
+</div>
+<div class="banner-reservation">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 pe-0 ps-0">
+                <div class="group-info">
+                    <div class="content-book">
+                        <h2>ĐẶT BÀN</h2>
+                        <p>Hỗ trợ: <span>+88-779238876</p>
+                        <p class="error"></p>
+                    </div>
+                    <div class="input-info">
+                        <div class="name">
+                            <input class="input input1" id="name" type="text" placeholder="Your Name" />
+                        </div>
+                        <div class="email">
+                            <input class="input input2" id="email" type="text" placeholder="Email" />
+                        </div>
+                    </div>
+                    <div class="book">
+                        <input type="number" class="group group1" placeholder="Số bàn"></input>
+                        <input class="group day" type="date" />
+                        <input type="time" class="group time"></input>
+                    </div>
+                    <textarea name="" id="mess" cols="30" rows="10" placeholder="Message"></textarea>
+                    <button class="btn4">ĐẶT BÀN</button>
+                </div>
+            </div>
+            <div class="col-lg-4 ps-0 pe-0 center">
+                <div class="banner-discount">
+                    <div class="discount">
+                        <h5>
+                            ƯU ĐÃI HẤP DẪN
+                        </h5>
+                        <h4>Ưu đãi trưa và tối</h4>
+                    </div>
+                    <div class="discount-sale d-flex align-items-center justify-content-center">
+                        <div class="text">
+                            <p>LÊN ĐẾN</p>
+                            <h3>40%</h3>
+                            <p>GIẢM GIÁ</p>
+                        </div>
+                    </div>
+                    <div class="list-discount d-flex justify-content-center">
+                        <ul>
+                            <li>Không áp dụng cho đơn hàng trực tuyến</li>
+                            <li>Không hoàn lại</li>
+                            <li>huyến mại kết thúc vào ngày 31 tháng 12</li>
+                        </ul>
+                    </div>
+                    <a href="reservation.html" class="btn4 d-flex align-items-center justify-content-center">ĐẶT NGAY</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-3">
+                <div class="list-footer">
+                    <ul class="start">
+                        <li><a id="1" href="">TRANG CHỦ</a></li>
+                        <li><a id="2" href="">GIỚI THIỆU</a></li>
+                        <li><a id="3" href="">THỰC ĐƠN</a></li>
+                        <li><a id="4" href="">ĐẶT CHỖ</a></li>
+                        <li><a id="5" href="">LIÊN HỆ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="info">
+                    <div class="line-1"></div>
+                    <div class="line-2"></div>
+                    <div class="logo">
+                        <img src="img/logo/logo.png" alt="" />
+                    </div>
+                    <div class="address">
+                        <p>
+                            20 MỸ ĐÌNH, NAM TỪ LIÊM, HÀ NỘI <br />
+                            <span>booking@domainname.com</span> <br />
+                            <span>Đặt chỗ : +84 - 779238876</span> <br /> Giờ mở cửa: 09:00 am - 01:00 pm
+                        </p>
+                    </div>
+                    <ul class="turn d-flex justify-content-center">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <h3>Nhận thông báo & Ưu đãi</h3>
+                    <p class="sub">Đăng ký theo dõi chúng tôi để được <span>25% Off.</span></p>
+                    <div class="email">
+                        <div class="input">
+                            <input type="text" placeholder="Email" />
+                        </div>
+                        <div class="icon"><i class="fa-regular fa-envelope"></i></div>
+                        <button class="btn2">ĐĂNG KÝ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="list-footer">
+                    <ul class="start">
+                        <li><a href="">FACEBOOK</a></li>
+                        <li><a href="">TWITTER</a></li>
+                        <li><a href="">INSTAGRAM</a></li>
+                        <li><a href="">YOUTUBE</a></li>
+                        <li><a href="">GOOGLE MAP</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="coppyright">
+        © 2024 Restaurt. All Rights Reserved | Code by <span> <a href=""> HongQuan Developer</a></span>
+    </p>
+</div>
+
+<body>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- js bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- javascript -->
+    <script src="/path/to/cdn/jquery.min.js"></script>
+    <script src="jQuery-Plugin-For-Counting-Up-Numbers-While-Scrolling-numscroller/numscroller-1.0.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
