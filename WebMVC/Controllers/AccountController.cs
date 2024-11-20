@@ -16,62 +16,56 @@ namespace WebMVC.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
+        private readonly HttpClient _httpClient;
 
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+        public AccountController(HttpClient httpClient)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _configuration = configuration;
+            _httpClient = httpClient;
         }
 
-        // GET: Account/Register
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
 
-        // POST: Account/Register
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(Register model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser
-                {
-                    UserName = model.Username,
-                    Email = model.Email,
-                    FullName = model.FullName, // Lưu FullName
-                    Phone = model.Phone // Lưu Phone
-                };
-                var result = await _userManager.CreateAsync(user, model.Password);
+        //// GET: Account/Register
+        //[HttpGet]
+        //public IActionResult Register()
+        //{
+        //    return View();
+        //}
 
-                if (result.Succeeded)
-                {
-                    if (!await _roleManager.RoleExistsAsync("User"))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole("User"));
-                    }
+        //// POST: Account/Register
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Register(Register model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser
+        //        {
+        //            UserName = model.Username,
+        //            Email = model.Email,
+        //            FullName = model.FullName, // Lưu FullName
+        //            Phone = model.Phone // Lưu Phone
+        //        };
+        //        var result = await _userManager.CreateAsync(user, model.Password);
 
-                    await _userManager.AddToRoleAsync(user, "User");
-                    return RedirectToAction("Login");
-                }
+        //        if (result.Succeeded)
+        //        {
+        //            if (!await _roleManager.RoleExistsAsync("User"))
+        //            {
+        //                await _roleManager.CreateAsync(new IdentityRole("User"));
+        //            }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-            }
+        //            await _userManager.AddToRoleAsync(user, "User");
+        //            return RedirectToAction("Login");
+        //        }
 
-            return View(model);
-        }
+        //        foreach (var error in result.Errors)
+        //        {
+        //            ModelState.AddModelError("", error.Description);
+        //        }
+        //    }
+
+        //    return View(model);
+        //}
 
         // GET: Account/Login
         [HttpGet]
@@ -82,52 +76,64 @@ namespace WebMVC.Controllers
 
         // POST: Account/Login
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Login model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("https://localhost:7228/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var response = await client.PostAsJsonAsync("https://localhost:7228/api/Account/login", model);
+            if (response.IsSuccessStatusCode)
             {
-                var user = await _userManager.FindByNameAsync(model.Username);
-                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse>();
+
+                if (result != null)
                 {
-                    // Lấy role của user
-                    var userRoles = await _userManager.GetRolesAsync(user);
+                    var token = result.Token;
+                    var userName = result.UserName;
+                    var userRoles = result.userRole;
+                    var userId = result.userID;
 
-                    // Tạo claim cho token
-                    var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName!),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                    };
-                    authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-                    // Cấu hình token
-                    var jwtSettings = _configuration.GetSection("Jwt");
-                    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
-
-                    var token = new JwtSecurityToken(
-                        issuer: jwtSettings["Issuer"],
-                        expires: DateTime.UtcNow.AddHours(double.Parse(jwtSettings["ExpiryHours"]!)),
-                        claims: authClaims,
-                        signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                    );
-
-                    var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-                    // Lưu trữ token vào cookie
-                    Response.Cookies.Append("Authorization", jwtToken, new CookieOptions
+                    Response.Cookies.Append("Cookie", token, new CookieOptions
                     {
                         HttpOnly = true,
                         Secure = true,
-                        SameSite = SameSiteMode.Strict
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTimeOffset.UtcNow.AddHours(1)
                     });
 
-                    // Điều hướng dựa trên role
-                    if (userRoles.Contains("Admin"))
+                    Response.Cookies.Append("userRoles", userRoles, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTimeOffset.UtcNow.AddHours(1)
+                    });
+
+                    Response.Cookies.Append("userName", userName, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTimeOffset.UtcNow.AddHours(1)
+                    });
+
+                    Response.Cookies.Append("userId", userId, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTimeOffset.UtcNow.AddHours(1)
+                    });
+
+                    if (userRoles == "Admin")
                     {
                         return RedirectToAction("Index", "Admin");
                     }
-                    else if (userRoles.Contains("User"))
+                    else if (userRoles == "User")
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -137,113 +143,115 @@ namespace WebMVC.Controllers
                     }
                 }
 
-                ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
+                ModelState.AddModelError("", "Lỗi CMNR");
             }
 
             return View(model);
         }
 
-        // GET: Account/AddRole
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public IActionResult AddRole()
-        {
-            return View();
-        }
 
-        // POST: Account/AddRole
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddRole(string role)
-        {
-            if (!string.IsNullOrEmpty(role))
-            {
-                if (!await _roleManager.RoleExistsAsync(role))
-                {
-                    var result = await _roleManager.CreateAsync(new IdentityRole(role));
-                    if (result.Succeeded)
-                    {
-                        ViewBag.Message = "Role added successfully.";
-                        return View();
-                    }
 
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Role already exists.");
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("", "Role cannot be empty.");
-            }
+        //// GET: Account/AddRole
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet]
+        //public IActionResult AddRole()
+        //{
+        //    return View();
+        //}
 
-            return View();
-        }
+        //// POST: Account/AddRole
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddRole(string role)
+        //{
+        //    if (!string.IsNullOrEmpty(role))
+        //    {
+        //        if (!await _roleManager.RoleExistsAsync(role))
+        //        {
+        //            var result = await _roleManager.CreateAsync(new IdentityRole(role));
+        //            if (result.Succeeded)
+        //            {
+        //                ViewBag.Message = "Role added successfully.";
+        //                return View();
+        //            }
 
-        // GET: Account/AssignRole
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public IActionResult AssignRole()
-        {
-            return View();
-        }
+        //            foreach (var error in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", error.Description);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("", "Role already exists.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("", "Role cannot be empty.");
+        //    }
 
-        // POST: Account/AssignRole
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignRole(UserRole model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByNameAsync(model.Username);
-                if (user == null)
-                {
-                    ModelState.AddModelError("", "User not found.");
-                    return View(model);
-                }
+        //    return View();
+        //}
 
-                if (!await _roleManager.RoleExistsAsync(model.Role))
-                {
-                    ModelState.AddModelError("", "Role does not exist.");
-                    return View(model);
-                }
+        //// GET: Account/AssignRole
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet]
+        //public IActionResult AssignRole()
+        //{
+        //    return View();
+        //}
 
-                var result = await _userManager.AddToRoleAsync(user, model.Role);
-                if (result.Succeeded)
-                {
-                    ViewBag.Message = "Role assigned successfully.";
-                    return View();
-                }
+        //// POST: Account/AssignRole
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AssignRole(UserRole model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = await _userManager.FindByNameAsync(model.Username);
+        //        if (user == null)
+        //        {
+        //            ModelState.AddModelError("", "User not found.");
+        //            return View(model);
+        //        }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-            }
+        //        if (!await _roleManager.RoleExistsAsync(model.Role))
+        //        {
+        //            ModelState.AddModelError("", "Role does not exist.");
+        //            return View(model);
+        //        }
 
-            return View(model);
-        }
+        //        var result = await _userManager.AddToRoleAsync(user, model.Role);
+        //        if (result.Succeeded)
+        //        {
+        //            ViewBag.Message = "Role assigned successfully.";
+        //            return View();
+        //        }
 
-        // GET: Account/Logout
-        [Authorize]
-        [HttpGet]
-        public IActionResult Logout()
-        {
-            // Xóa cookie chứa token
-            if (Request.Cookies.ContainsKey("Authorization"))
-            {
-                Response.Cookies.Delete("Authorization");
-            }
+        //        foreach (var error in result.Errors)
+        //        {
+        //            ModelState.AddModelError("", error.Description);
+        //        }
+        //    }
 
-            // Điều hướng về trang đăng nhập
-            return RedirectToAction("Index" , "Home");
-        }
+        //    return View(model);
+        //}
+
+        //// GET: Account/Logout
+        //[Authorize]
+        //[HttpGet]
+        //public IActionResult Logout()
+        //{
+        //    // Xóa cookie chứa token
+        //    if (Request.Cookies.ContainsKey("Authorization"))
+        //    {
+        //        Response.Cookies.Delete("Authorization");
+        //    }
+
+        //    // Điều hướng về trang đăng nhập
+        //    return RedirectToAction("Index" , "Home");
+        //}
     }
 }

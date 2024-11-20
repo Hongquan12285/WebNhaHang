@@ -359,7 +359,6 @@ namespace WebData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -372,7 +371,7 @@ namespace WebData.Migrations
                     b.Property<decimal?>("PriceSale")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductCategoryId")
+                    b.Property<int?>("ProductCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductCode")
@@ -560,7 +559,7 @@ namespace WebData.Migrations
                         .HasForeignKey("OrderId");
 
                     b.HasOne("WebData.Models.Product", "product")
-                        .WithMany("orderDetails")
+                        .WithMany("OrderDetails")
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Order");
@@ -570,13 +569,11 @@ namespace WebData.Migrations
 
             modelBuilder.Entity("WebData.Models.Product", b =>
                 {
-                    b.HasOne("WebData.Models.ProductCategory", "productCategory")
+                    b.HasOne("WebData.Models.ProductCategory", "ProductCategory")
                         .WithMany("products")
-                        .HasForeignKey("ProductCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductCategoryId");
 
-                    b.Navigation("productCategory");
+                    b.Navigation("ProductCategory");
                 });
 
             modelBuilder.Entity("WebData.Models.ProductImage", b =>
@@ -604,11 +601,11 @@ namespace WebData.Migrations
 
             modelBuilder.Entity("WebData.Models.Product", b =>
                 {
+                    b.Navigation("OrderDetails");
+
                     b.Navigation("ProductImages");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("orderDetails");
                 });
 
             modelBuilder.Entity("WebData.Models.ProductCategory", b =>

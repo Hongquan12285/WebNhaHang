@@ -6,15 +6,18 @@ using System;
 using System.Text;
 using WebData.Data;
 using WebData.Models;
+using WebMVC.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient();
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
 
-// Cấu hình Identity
+builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 6;
@@ -92,10 +95,11 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            Array.Empty<string>()
+Array.Empty<string>()
         }
     });
 });
+
 
 var app = builder.Build();
 
@@ -123,6 +127,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo API v1");
     });
 }
+app.UseMiddleware<ErrorMiddleware>();
 
 app.MapAreaControllerRoute(
     name: "Admin",

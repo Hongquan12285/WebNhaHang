@@ -76,7 +76,6 @@ namespace WebMVC.Areas.Admin.Controllers
             return View(model);
         }
         // GET: Account/AddRole
-        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult AddRole()
         {
@@ -84,7 +83,6 @@ namespace WebMVC.Areas.Admin.Controllers
         }
 
         // POST: Account/AddRole
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddRole(string role)
@@ -119,7 +117,6 @@ namespace WebMVC.Areas.Admin.Controllers
         }
 
         // GET: Account/AssignRole
-        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult AssignRole()
         {
@@ -127,7 +124,6 @@ namespace WebMVC.Areas.Admin.Controllers
         }
 
         // POST: Account/AssignRole
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignRole(UserRole model)

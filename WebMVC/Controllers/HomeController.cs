@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Net.Http;
 using WebMVC.Models;
 
 namespace WebMVC.Controllers
@@ -16,7 +19,6 @@ namespace WebMVC.Controllers
 
         public IActionResult Index()
         {
-
             return View();
         }
 

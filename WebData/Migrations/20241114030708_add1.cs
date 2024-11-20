@@ -233,12 +233,12 @@ namespace WebData.Migrations
                     ProductCode = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PriceSale = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     IsHome = table.Column<bool>(type: "bit", nullable: false),
-                    ProductCategoryId = table.Column<int>(type: "int", nullable: false)
+                    ProductCategoryId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -247,8 +247,7 @@ namespace WebData.Migrations
                         name: "FK_products_productCategories_ProductCategoryId",
                         column: x => x.ProductCategoryId,
                         principalTable: "productCategories",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
