@@ -1,0 +1,30 @@
+﻿@model List<WebData.Models.Product>
+
+<h2>Danh sách sản phẩm</h2>
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var product in Model)
+    {
+        <div class="content">
+            <div class="food d-flex">
+                <div class="images">
+                    <img src="@Url.Action("GetImage", "Products", new { imgFile = product.Image })"
+                         onerror="this.src='/images/default.png';"
+                         alt="Hình ảnh sản phẩm" />
+                </div>
+                <div class="des">
+                    <div class="text">
+                        <h5>@product.Title</h5>
+                        <h6>@string.Format("{0:C0}", product.Price)</h6>
+                    </div>
+                    <p>@product.Description</p>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>Không có sản phẩm nào trong danh mục này.</p>
+}

@@ -308,12 +308,6 @@ body {
     margin-top: 50px;
 }
 
-.btn {
-    font-size: 25px;
-    color: var(--white);
-    display: none;
-}
-
 .cart {
     position: relative;
     left: -5%;
@@ -750,9 +744,7 @@ body {
     .right .phone {
         display: none;
     }
-    .btn {
-        display: inline-block !important;
-    }
+   
     .navbar {
         background-color: rgb(29, 29, 29);
         border-bottom: none;

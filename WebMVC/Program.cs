@@ -6,6 +6,7 @@ using System;
 using System.Text;
 using WebData.Data;
 using WebData.Models;
+using WebMVC.Controllers;
 using WebMVC.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);

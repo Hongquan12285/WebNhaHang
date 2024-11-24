@@ -69,38 +69,29 @@
                 </div>
                 <a href="cart.html" class="cart"><i class="fa-solid fa-cart-shopping"></i> <span>0</span></a>
                 <div class="user">
-                    @if (User.Identity?.IsAuthenticated ?? false)
+                    @if (ViewData["userRoles"]?.ToString() == "User")
                     {
-                        // Kiểm tra xem người dùng có quyền "User"
-                        if (User.IsInRole("User"))
-                        {
-                            <!-- Hiển thị tên người dùng khi đã đăng nhập và có quyền User -->
-                            <div class="dropdown">
-                                <span class="text-login dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Xin chào, @User.Identity.Name
-                                </span>
-                                <ul class="dropdown-menu bg-black" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item bg-black text-bold" asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
-                                </ul>
-                            </div>
-                        }
-                        else
-                        {
-                            <span class="icon-login">
-                                <i class="fa-solid fa-circle-user"></i>
-                                <a asp-controller="Account" asp-action="Login">ĐĂNG NHẬP</a>
+                        <!-- Hiển thị khi người dùng có quyền User -->
+                        <div class="dropdown">
+                            <span class="text-login dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Xin chào, @ViewData["userName"]
                             </span>
-                        }
+                            <ul class="dropdown-menu bg-black" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item bg-black text-bold" asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
+                            </ul>
+                        </div>
                     }
                     else
                     {
-                        <!-- Hiển thị "Đăng nhập" khi chưa đăng nhập -->
+                        <!-- Hiển thị khi chưa đăng nhập hoặc không có quyền User -->
                         <span class="icon-login">
                             <i class="fa-solid fa-circle-user"></i>
                             <a asp-controller="Account" asp-action="Login">ĐĂNG NHẬP</a>
                         </span>
                     }
                 </div>
+
+
                 <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu-mobile">
                     <i class="fa-solid fa-bars"></i>
                 </button>

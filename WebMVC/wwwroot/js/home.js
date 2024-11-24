@@ -1,4 +1,4 @@
-const item1 = document.querySelector("#item-1");
+﻿const item1 = document.querySelector("#item-1");
 const item2 = document.querySelector("#item-2");
 const item3 = document.querySelector("#item-3");
 const item4 = document.querySelector("#item-4");

@@ -1,4 +1,6 @@
-﻿@{
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<WebData.Models.Product>
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -157,9 +159,37 @@
             <h2> MENU</h2>
         </div>
     </div>
+    <!-- Sử dụng ViewModel trong view -->
+
     <div class="container">
-        <div class="row food-menu list-food d-flex justify-content-center" id="food-menu"></div>
+        <div class="row">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var product in Model)
+                {
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 scale">
+                        <div class="card">
+                            <div class="image">
+                                <img src="@Url.Action("GetImage", "OrderFood", new { imgFile = product.Image })" alt="@product.Title" style="width:100px; height:auto;" />
+                            </div>
+                            <div class="name">@product.Title</div>
+                            <div class="des">@product.Description</div>
+                            <div class="price">@product.Price.ToString("C")</div>
+                            <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                                <input type="hidden" name="ProductId" value="@product.Id" />
+                                <button>Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No products available.</p>
+            }
+        </div>
     </div>
+
 </div>
 <div class="banner-reservation">
     <div class="container">
@@ -285,7 +315,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- javascript -->
     <script src="jQuery-Plugin-For-Counting-Up-Numbers-While-Scrolling-numscroller/numscroller-1.0.js"></script>
-    <script src="js/menu.js"></script>
+    @* <script src="js/menu.js"></script> *@
     <script src="js/main.js"></script>
 </body>
 

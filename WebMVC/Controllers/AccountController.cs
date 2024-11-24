@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -240,18 +241,30 @@ namespace WebMVC.Controllers
         //}
 
         //// GET: Account/Logout
-        //[Authorize]
-        //[HttpGet]
-        //public IActionResult Logout()
-        //{
-        //    // Xóa cookie chứa token
-        //    if (Request.Cookies.ContainsKey("Authorization"))
-        //    {
-        //        Response.Cookies.Delete("Authorization");
-        //    }
+        public async Task<IActionResult> Logout()
+        {
+            var token = Request.Cookies["Cookie"];
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.PostAsync("https://localhost:7228/api/Account/logout", null);
 
-        //    // Điều hướng về trang đăng nhập
-        //    return RedirectToAction("Index" , "Home");
-        //}
+            if (response.IsSuccessStatusCode)
+            {
+                // Xóa tất cả cookie liên quan
+                Response.Cookies.Delete("Cookie");
+                Response.Cookies.Delete("UserId");
+                Response.Cookies.Delete("userRoles");
+                Response.Cookies.Delete("userName");
+
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                // Xử lý lỗi nếu API trả về mã không thành công
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                ModelState.AddModelError("", $"Đăng xuất thất bại. Chi tiết: {errorMessage}");
+                return View("Error");
+            }
+        }
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -6,6 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebData.Models;
+using System.Net.Http.Headers;
+using System.Net.Http;
 
 namespace WebMVC.Areas.Admin.Controllers
 {
@@ -15,16 +19,17 @@ namespace WebMVC.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly HttpClient _httpClient;
 
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+        public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, HttpClient httpClient)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _httpClient = httpClient;
         }
+
+
 
         // GET: Account/Login
         [HttpGet]
@@ -160,18 +165,60 @@ namespace WebMVC.Areas.Admin.Controllers
         }
 
         // GET: Account/Logout
-        [Authorize]
-        [HttpGet]
-        public IActionResult Logout()
+        // GET: Account/Logout
+        public async Task<IActionResult> Logout()
         {
-            // Xóa cookie chứa token
-            if (Request.Cookies.ContainsKey("Authorization"))
+            try
             {
-                Response.Cookies.Delete("Authorization");
-            }
+                // Lấy token từ cookie
+                var token = Request.Cookies["Cookie"];
+                if (string.IsNullOrEmpty(token))
+                {
+                    ModelState.AddModelError("", "Không tìm thấy token đăng nhập.");
+                    return RedirectToAction("Login");
+                }
 
-            // Điều hướng về trang đăng nhập
-            return RedirectToAction("Login", "Account", new { area = "" });
+                // Thêm token vào header
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                // Gửi yêu cầu logout tới API
+                var response = await _httpClient.PostAsync("https://localhost:7228/api/Account/logout", null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Xóa tất cả cookie liên quan
+                    Response.Cookies.Delete("Cookie");
+                    Response.Cookies.Delete("userId");
+                    Response.Cookies.Delete("userRoles");
+                    Response.Cookies.Delete("userName");
+
+                    // Kiểm tra vai trò từ cookie
+                    var userRole = Request.Cookies["userRoles"];
+
+                    if (userRole == "Admin")
+                    {
+                        // Nếu vai trò là Admin, chuyển về trang login của User
+                        return RedirectToAction("Login", "Account", new { area = "" });
+                    }
+
+                    // Mặc định chuyển về trang Login của Admin
+                    return RedirectToAction("Login", "Account", new { area = "Admin" });
+                }
+                else
+                {
+                    // Xử lý lỗi nếu API trả về lỗi
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    ModelState.AddModelError("", $"Đăng xuất thất bại. Chi tiết: {errorMessage}");
+                    return View("Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ
+                ModelState.AddModelError("", $"Đã xảy ra lỗi khi đăng xuất: {ex.Message}");
+                return View("Error");
+            }
         }
+
     }
 }

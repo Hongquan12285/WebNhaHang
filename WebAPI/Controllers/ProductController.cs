@@ -25,16 +25,42 @@ namespace WebAPI.Controllers
             _environment = environment;
         }
 
+        [HttpGet("GetByCategory/{categoryId}")]
+        public async Task<IActionResult> GetByCategory(int categoryId)
+        {
+            try
+            {
+                var products = await _context.products
+                    .Where(p => p.ProductCategoryId == categoryId)
+                    .Include(p => p.ProductCategory)
+                    .ToListAsync();
+
+                if (products == null || !products.Any())
+                {
+                    return NotFound(new { Message = "Không tìm thấy sản phẩm cho danh mục này." });
+                }
+
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi trên server.", Error = ex.Message });
+            }
+        }
+
+
         // Lấy danh sách sản phẩm
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _context.products.Include(x => x.ProductCategory).ToListAsync();
-            var options = new JsonSerializerOptions
+            if (_context.products == null)
             {
-                ReferenceHandler = ReferenceHandler.Preserve,
-                WriteIndented = true
-            };
+                return NotFound();
+            }
+
+            var products = await _context.products
+                .Include(x => x.ProductCategory)
+                .ToListAsync();
             return Ok(products);
         }
 
