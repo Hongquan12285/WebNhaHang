@@ -90,7 +90,7 @@ namespace WebAPI.Controllers
                 });
             }
 
-            return Unauthorized(new { Error = "Lỗi CMNR" });
+            return Unauthorized(new { Error = "Lỗi" });
         }
 
 

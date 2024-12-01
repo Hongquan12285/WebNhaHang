@@ -25,48 +25,53 @@ namespace WebMVC.Controllers
         }
 
 
-        //// GET: Account/Register
-        //[HttpGet]
-        //public IActionResult Register()
-        //{
-        //    return View();
-        //}
+        // GET: Account/Register
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
 
-        //// POST: Account/Register
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Register(Register model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new ApplicationUser
-        //        {
-        //            UserName = model.Username,
-        //            Email = model.Email,
-        //            FullName = model.FullName, // Lưu FullName
-        //            Phone = model.Phone // Lưu Phone
-        //        };
-        //        var result = await _userManager.CreateAsync(user, model.Password);
+        // POST: Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(Register model)
+        {
+            if (!ModelState.IsValid) return View(model);
 
-        //        if (result.Succeeded)
-        //        {
-        //            if (!await _roleManager.RoleExistsAsync("User"))
-        //            {
-        //                await _roleManager.CreateAsync(new IdentityRole("User"));
-        //            }
+            // Gửi request tới API
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:7228/") 
+            };
 
-        //            await _userManager.AddToRoleAsync(user, "User");
-        //            return RedirectToAction("Login");
-        //        }
+            try
+            {
+                // Gửi yêu cầu POST với model
+                var response = await client.PostAsJsonAsync("api/Account/register", model);
 
-        //        foreach (var error in result.Errors)
-        //        {
-        //            ModelState.AddModelError("", error.Description);
-        //        }
-        //    }
+                if (response.IsSuccessStatusCode)
+                {
+                    // Nếu API trả về thành công
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    TempData["SuccessMessage"] = "Đăng ký thành công!";
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    // Lấy lỗi từ API
+                    var errorResponse = await response.Content.ReadAsStringAsync();
+                    ModelState.AddModelError("", $"Lỗi: {errorResponse}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi trong quá trình gửi request
+                ModelState.AddModelError("", $"Lỗi: {ex.Message}");
+            }
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
         // GET: Account/Login
         [HttpGet]
@@ -144,7 +149,7 @@ namespace WebMVC.Controllers
                     }
                 }
 
-                ModelState.AddModelError("", "Lỗi CMNR");
+                ModelState.AddModelError("", "Lỗi");
             }
 
             return View(model);
