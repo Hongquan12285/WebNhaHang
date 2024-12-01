@@ -1,28 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebData.Models
 {
     public class Order
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
+
         [Required]
-        public string Code { get; set; }
-        [Required(ErrorMessage = "Tên khách hàng không để trống")]
-        public string CustomerName { get; set; }
-        [Required(ErrorMessage = "Số điện thoại không để trống")]
-        public string Phone { get; set; }
-        [Required(ErrorMessage = "Địa chỉ khổng để trống")]
-        public string Address { get; set; }
-        public string Email { get; set; }
+        [StringLength(100)]
+        public string OrderName { get; set; }
+
+        public decimal Total { get; set; }
+        public DateTime Date { get; set; }
+
         [Required]
-        public DateTime OrderDate { get; set; } = DateTime.Now;
-        public int Quantity { get; set; }
-        public int TypePayment { get; set; }
-        [Required]
-        public decimal TotalAmount { get; set; }
-        [Required]
-        public string Status { get; set; }
-        public string CustomerId { get; set; }
-        public ICollection<OrderDetail>? orderDetails { get; set; }
+        public string ClientId { get; set; }
+        [ForeignKey("ClientId")]
+        public ApplicationUser Client { get; set; }
+
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

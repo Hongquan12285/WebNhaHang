@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebData.Models;
+using System.Net;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -40,7 +41,8 @@ namespace WebAPI.Controllers
                 UserName = model.Username,
                 Email = model.Email,
                 FullName = model.FullName,
-                Phone = model.Phone
+                Phone = model.Phone,
+                Address = model.Address,
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

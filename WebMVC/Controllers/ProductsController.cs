@@ -8,17 +8,31 @@ namespace WebMVC.Controllers
     public class ProductsController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly HttpClient _httpClient;
 
-        public ProductsController(IHttpClientFactory httpClientFactory)
+        public ProductsController(IHttpClientFactory httpClientFactory, HttpClient httpClient)
         {
             _httpClientFactory = httpClientFactory;
+            _httpClient = httpClient;
         }
 
         public async Task<IActionResult> Index()
         {
             return View();
         }
+        public async Task<IActionResult> detailsproduct(int id)
+        {
+            var response = await _httpClient.GetAsync($"https://localhost:7228/api/Product/{id}");
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString); // Log dữ liệu JSON
+            var pr = JsonSerializer.Deserialize<Product>(jsonString);
+            if (response.IsSuccessStatusCode)
+            {
+                return View(pr);
+            }
+            return NoContent();
 
+        }
         public async Task<IActionResult> GetImage(string imgFile)
         {
             try

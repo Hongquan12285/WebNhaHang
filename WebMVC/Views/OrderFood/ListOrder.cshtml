@@ -1,0 +1,188 @@
+﻿@model List<WebData.Models.Order>
+
+<style>
+    .input-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .input-group .btn {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            font-size: 18px;
+        }
+
+        .input-group .quantity-input {
+            text-align: center;
+            font-size: 16px;
+            width: 60px;
+            padding: 5px;
+        }
+
+    .btn-update-quantity {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+    }
+</style>
+
+<main class="app-main">
+    <div class="app-content">
+        <div class="container-fluid">
+            <div class="form-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông tin đơn hàng</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Khách Hàng</th>
+                                        <th>Tổng giá</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        foreach (var order in Model)
+                                        {
+                                            <tr>
+                                                <td>@order.OrderName</td>
+                                                <td>@order.Total.ToString("N0") VNĐ</td>
+                                                <td>
+                                                    <form asp-controller="Payment" asp-action="CreatePayment" method="post">
+                                                        <input type="hidden" name="orderType" value="@(order.OrderDetails != null ? string.Join(", ", order.OrderDetails.Select(d => d.product.Title)) : "Không có sản phẩm")" />
+                                                        <input type="hidden" name="total" value="@order.Total" />
+                                                        <button type="submit" class="btn btn-success">Thanh Toán</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered mt-3">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>STT</th>
+                                                                    <th>Tên sản phẩm</th>
+                                                                    <th>Hình ảnh</th>
+                                                                    <th>Số lượng</th>
+                                                                    <th>Giá</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if (order.OrderDetails != null && order.OrderDetails.Any())
+                                                                {
+                                                                    int stt = 1;
+                                                                    foreach (var detail in order.OrderDetails)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@stt</td>
+                                                                            <td>@(detail.product?.Title ?? "Không có tên")</td>
+                                                                            <td>
+                                                                                @if (!string.IsNullOrEmpty(detail.product?.Image))
+                                                                                {
+                                                                                    <img src="@Url.Action("GetImage", "OrderFood", new { imgFile = detail.product.Image })" style="width:80px;" alt="Ảnh sản phẩm" />
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span>Không có ảnh</span>
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="input-group">
+                                                                                    <button class="btn btn-outline-secondary" onclick="updateQuantity(this, -1)">-</button>
+                                                                                    <input type="number" class="quantity-input" value="@detail.Quantity" min="1" data-id="@detail.ID" />
+                                                                                    <button class="btn btn-outline-secondary" onclick="updateQuantity(this, 1)">+</button>
+                                                                                </div>
+                                                                                <button class="btn btn-primary btn-update-quantity mt-2" onclick="submitQuantity(this)">Cập nhật</button>
+                                                                            </td>
+                                                                            <td>@detail.Price.ToString("N0") VNĐ</td>
+                                                                            <td>
+                                                                                <a asp-controller="OrderDetail" asp-action="DeleteOrderDetail" asp-route-id="@detail.ID" class="btn btn-danger" onclick="return confirm('Xóa sản phẩm này?');">Xóa</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        stt++;
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td colspan="6">Không có chi tiết đơn hàng</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="3">Không có đơn hàng</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function updateQuantity(button, change) {
+        const input = button.closest(".input-group").querySelector(".quantity-input");
+        let quantity = parseInt(input.value) + change;
+
+        if (quantity < 1) quantity = 1;
+        input.value = quantity;
+    }
+
+    function submitQuantity(button) {
+        const input = button.closest(".input-group").querySelector(".quantity-input");
+        const detailId = input.getAttribute("data-id");
+        const quantity = input.value;
+
+        if (!quantity || quantity <= 0) {
+            alert("Số lượng phải lớn hơn 0!");
+            return;
+        }
+
+        fetch(`/OrderDetail/UpdateOrderDetail?id=${detailId}&quantity=${quantity}`, { method: "POST" })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || "Cập nhật thành công!");
+                location.reload();
+            })
+            .catch(() => alert("Không thể cập nhật số lượng!"));
+    }
+</script>

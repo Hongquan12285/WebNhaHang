@@ -1,11 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@model WebData.Models.Product
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RESTAURANT</title>
+    <meta property="og:title" content="DELICI" />
+    <meta property="og:description" content="Welcome to DELICI" />
+    <title>DELICI</title>
+
     <!-- Font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Css bootstrap -->
@@ -13,14 +20,7 @@
     <!-- Global css -->
     <link rel="stylesheet" href="~/css/style.css" />
     <!-- local css -->
-    <link rel="stylesheet" href="css/home.css" />
-    <link rel="stylesheet" href="css/about.css" />
-    <link rel="stylesheet" href="css/contact.css" />
-    <link rel="stylesheet" href="css/menu.css" />
-    <link rel="stylesheet" href="css/menu2.css" />
-    <link rel="stylesheet" href="css/reservation.css" />
-
-
+    <link rel="stylesheet" href="/css/detailsproduct.css" />
 </head>
 
 <body>
@@ -67,7 +67,7 @@
                 <div class="phone">
                     <span><i class="fa-solid fa-phone"></i></span>+84 779238876
                 </div>
-                <a href="cart.html" class="cart"><i class="fa-solid fa-cart-shopping"></i> <span>0</span></a>
+                <a asp-controller="OrderFood" asp-action="ListOrder" class="cart"><i class="fa-solid fa-cart-shopping"></i> <span>0</span></a>
                 <div class="user">
                     @if (ViewData["userRoles"]?.ToString() == "User")
                     {
@@ -103,7 +103,7 @@
                 <a href="login-signup.html"><i class="fa-solid fa-user"></i></a>
             </span>
         </div>
-        <p class="customer d-flex justify-content-center">Xin chào, @ViewData["userName"]</p>
+        <p class="customer d-flex justify-content-center">Xin chào, @User.Identity.Name</p>
         <div class="offcanvas-body">
             <ul class="offcanvas-nav">
                 <li class="nav-item">
@@ -140,7 +140,171 @@
             </div>
         </div>
     </div>
-    @RenderBody()
+    <div class="details">
+        <div class="product d-flex justify-content-center">
+            <div class="list-image">
+                <div class="image">
+                    <img src="@Url.Action("GetImage", "Products", new { imgFile = Model.Image })" class="img-fluid" alt="@Model.Title" />
+                </div>
+            </div>
+            <div class="small-image">
+                <ul>
+                    <li class="ava"><img src="img/menu-wine/full-2.jpg" alt="" /></li>
+                    <li><img src="img/menu-wine/head.jpg" alt="" /></li>
+                    <li><img src="img/menu-wine/body.jpg" alt="" /></li>
+                    <li><img src="img/menu-wine/madein.jpg" alt="" /></li>
+                </ul>
+            </div>
+        </div>
+        <div class="details-product">
+            <div class="info-product">
+                <ul class="start">
+                    <li><i class="fa-solid fa-star"></i></li>
+                    <li><i class="fa-solid fa-star"></i></li>
+                    <li><i class="fa-solid fa-star"></i></li>
+                    <li><i class="fa-solid fa-star"></i></li>
+                    <li><i class="fa-solid fa-star"></i></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <ul class="ingredients">
+                    <li class="text-ing">
+                        <strong>@Model.Title</strong>
+                    </li>
+                    <li>@Model.Description</li>
+                </ul>
+                <div class="button-list">
+                    <div class="list-select">
+                        <button class="dropdown-type">
+                            <span>Select Type</span><i class="fa-solid fa-angle-up"></i>
+                        </button>
+                        <ul class="dropdown-select">
+                            <li class="normal">Normal</li>
+                            <li class="vip">Premium</li>
+                        </ul>
+                    </div>
+                    <a href="javascript:;" class="btn2 d-flex align-items-center justify-content-center">ADD TO CART</a>
+                </div>
+                <p class="attention"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="comment">
+        <div class="comment-product">
+            <h3><span class="big">4.8</span><span class="small">/5</span></h3>
+            <div class="evaluate-start">
+                <ul class="evaluate d-flex align-items-center">
+                    <li><img src="img/icon/start.png" alt="" /></li>
+                    <li><img src="img/icon/start.png" alt="" /></li>
+                    <li><img src="img/icon/start.png" alt="" /></li>
+                    <li><img src="img/icon/start.png" alt="" /></li>
+                    <li><img src="img/icon/start-1.png" alt="" /></li>
+                </ul>
+                <div class="number-evaluate">5 evaluate</div>
+                <h5>Product reviews (5)</h5>
+            </div>
+            <div class="comment-person">
+                <div class="group-avatar d-flex align-items-center">
+                    <div class="avatar">
+                        <img src="img/avarta/man-1.jpg" alt="" />
+                    </div>
+                    <div class="name-comment">
+                        <div class="review d-flex align-items-center">
+                            <h6>Robert Savin</h6>
+                            <ul class="evaluate d-flex align-items-center">
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start-1.png" alt="" /></li>
+                            </ul>
+                        </div>
+                        <p>Great wine. I'm very satisfied.</p>
+                    </div>
+                </div>
+                <div class="group-avatar d-flex align-items-center">
+                    <div class="avatar">
+                        <img src="img/avarta/man-2.jpg" alt="" />
+                    </div>
+                    <div class="name-comment">
+                        <div class="review d-flex align-items-center">
+                            <h6>David</h6>
+                            <ul class="evaluate d-flex align-items-center">
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start-1.png" alt="" /></li>
+                            </ul>
+                        </div>
+                        <p>This is a quality wine and the service is also very friendly.</p>
+                    </div>
+                </div>
+                <div class="group-avatar d-flex align-items-center">
+                    <div class="avatar">
+                        <img src="img/avarta/man-3.jpg" alt="" />
+                    </div>
+                    <div class="name-comment">
+                        <div class="review d-flex align-items-center">
+                            <h6>Petter</h6>
+                            <ul class="evaluate d-flex align-items-center">
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start-1.png" alt="" /></li>
+                            </ul>
+                        </div>
+                        <p>It can only be said that the quality is indisputable.</p>
+                    </div>
+                </div>
+                <div class="group-avatar d-flex align-items-center">
+                    <div class="avatar">
+                        <img src="img/avarta/women-1.jpg" alt="" />
+                    </div>
+                    <div class="name-comment">
+                        <div class="review d-flex align-items-center">
+                            <h6>Jenny Violet</h6>
+                            <ul class="evaluate d-flex align-items-center">
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start-1.png" alt="" /></li>
+                            </ul>
+                        </div>
+                        <p>Premium wines are really different from regular wines. Value and quality.</p>
+                    </div>
+                </div>
+                <div class="group-avatar d-flex align-items-center">
+                    <div class="avatar">
+                        <img src="img/avarta/women-2.jpg" alt="" />
+                    </div>
+                    <div class="name-comment">
+                        <div class="review d-flex align-items-center">
+                            <h6>Rose Krixi</h6>
+                            <ul class="evaluate d-flex align-items-center">
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start.png" alt="" /></li>
+                                <li><img src="img/icon/start-1.png" alt="" /></li>
+                            </ul>
+                        </div>
+                        <p>The scent of the wine is very fragrant and the taste is also great. I love it.</p>
+                    </div>
+                </div>
+                <div class="comment-me">
+                    <h4>Leave your Review</h4>
+                    <input type="text" placeholder="Enter comment here...   " />
+                    <div class="sub-add">
+                        <button class="comment-sub">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="footer">
         <div class="container">
             <div class="row align-items-center">
@@ -202,23 +366,18 @@
             © 2024 Restaurt. All Rights Reserved | Code by <span> <a href=""> HongQuan Developer</a></span>
         </p>
     </div>
-
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <!-- js bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- javascript -->
+    <script src="/path/to/cdn/jquery.min.js"></script>
     <script src="jQuery-Plugin-For-Counting-Up-Numbers-While-Scrolling-numscroller/numscroller-1.0.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
-    <script src="js/home.js"></script>
+    <script src="js/detailsproduct.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/about.js"></script>
-    <script src="js/contact.js"></script>
-    <script src="js/menu.js"></script>
-    <script src="js/menu2.js"></script>
-    <script src="js/reservation.js"></script>
 </body>
+
 </html>
+
